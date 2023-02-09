@@ -18,8 +18,11 @@
   "homepage": "https://gitlab.com/incubateur_m2i_afpa_2/tree-upjs/back-end/user-service#readme",
   "dependencies": {
     "body-parser": "^1.20.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-validator": "^6.14.3",
+    "helmet": "^6.0.1",
     "mongoose": "^6.9.1"
   }
 }

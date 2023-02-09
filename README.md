@@ -1,5 +1,14 @@
 # user-service
 
+.env :
+SERVER_PORT= 8010
+
+API_ADDRESS="/tree-up-api"
+PROJECT_SERVICE_ADDRESS=""
+MEDIA_SERVICE_ADDRESS=""
+
+DB_URL=""
+
 
 
 ## Getting started
