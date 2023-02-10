@@ -8,8 +8,21 @@ const testController = async (req, res) =>{
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const {name} = req.body;
-        return res.status(200).json({ name: await testService.getLastnameFromFirstname(name) });
+        return res.status(200).json({ name: await testService.getLastnameFromFirstname(req.body) });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+const testpostController = async (req, res) =>{
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        return res.status(200).json({ result: await testService.postUserTest(req.body) });
         
     } catch (error) {
         console.log(error);
@@ -19,4 +32,5 @@ const testController = async (req, res) =>{
 
 module.exports = {
     testController,
+    testpostController
 }
