@@ -39,7 +39,7 @@ const postProfileTest = async (data) => {
     const {date_birth} = data;
     const {city} = data;
     const {work} = data;
-    const {experience}  = data;
+    const {experience} = data;
     const {soft_skill} = data;
     const {uuid_user} = data;
 
@@ -56,7 +56,7 @@ const postProfileTest = async (data) => {
     await userProfile.save(function (err,doc){
         console.log(doc._id);
     });
-    return {"succes":'user added in the database'}
+    return {"succes":'user_profile added in the database'}
 }
 
 module.exports = {

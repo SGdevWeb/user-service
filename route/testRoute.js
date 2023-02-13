@@ -9,7 +9,7 @@ router.get('/test', DTO.test, testController.testController );
 
 router.post('/testpost',DTO.testPost, testController.testpostController);
 
-//router.post('/testpostprofile',testDTO.testPostProfile, testController.testPostProfile);
+router.post('/testpostprofile',DTO.testProfile, testController.testPostProfile);
 
 module.exports = router
 
