@@ -1,18 +1,13 @@
-const { body } = require('express-validator');
-//test
-const testDTO = [
-    body("name").exists().isString().notEmpty()
-];
+const Joi = require('joi');
+const schemaValidator = require('../middleware/testMiddleware');
 
-const testPostDTO = [
-    body("email").exists().isString().notEmpty(),
-    body("password").exists().isString().notEmpty(),
-    body("username").exists().isString().notEmpty(),
-    body("firstname").exists().isString().notEmpty(),
-    body("lastname").exists().isString().notEmpty()
-];
+function testSchema(req, res, next){
+    const testSchema = Joi.object({
+        name: Joi.string().required()
+    });
+    schemaValidator(req, testSchema, next)
+}
 
-module.exports = {
-    testDTO,
-    testPostDTO
-};
+
+
+module.exports = testSchema

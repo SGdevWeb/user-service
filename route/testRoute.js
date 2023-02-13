@@ -2,11 +2,14 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 const testController = require('../controller/testController');
-const testDTO = require('../dto/testDTO');
+const validator = require('../middleware/testMiddleware');
+const DTO = require('../dto/dtos');
 
-router.get('/test', testDTO.testDTO, testController.testController );
+router.get('/test', DTO.test, testController.testController );
 
-router.post('/testpost',testDTO.testPostDTO, testController.testpostController);
+router.post('/testpost',DTO.testPost, testController.testpostController);
+
+//router.post('/testpostprofile',testDTO.testPostProfile, testController.testPostProfile);
 
 module.exports = router
 
