@@ -5,6 +5,8 @@ const testController = require('../controller/testController');
 const validator = require('../middleware/testMiddleware');
 const DTO = require('../dto/dtos');
 
+
+//definitions des routes : url , dto , controller
 router.get('/test', DTO.test, testController.testController );
 
 router.post('/testpost',DTO.testPost, testController.testpostController);

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+//schama de la data des collections
 const userSchema = mongoose.Schema({
     id : Number,
     uuid: String,
@@ -16,5 +17,5 @@ const userSchema = mongoose.Schema({
         user_role: Boolean
     },
 });
-
+//nom de la collection  = nom du model+s exepemple nom du model : user, nom de la collections : users
 module.exports = mongoose.model("user",userSchema)

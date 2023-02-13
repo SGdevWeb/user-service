@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const schemaValidator = require('../middleware/testMiddleware');
 
+//shema de de verification des donner en entré de la route
 function testPostSchema(req, res, next){
     const testPostSchema = Joi.object({
         email: Joi.string().email().lowercase().required(),

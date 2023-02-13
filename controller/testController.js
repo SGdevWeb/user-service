@@ -1,7 +1,7 @@
 const { validationResult } = require('express-validator');
 const testService = require('../service/testService')
 
-//test
+//controller appeller par la route 
 const testController = async (req, res) => {
     try {
         return res.status(200).json({ name: await testService.getLastnameFromFirstname(req.body) });

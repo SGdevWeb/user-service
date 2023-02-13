@@ -1,5 +1,6 @@
 const Joi = require('joi')
 
+//function de qui valide si les données en entré de la route correspondes au schema
 module.exports = function(req, schema, next) {
     const options = {
         abortEarly: false,

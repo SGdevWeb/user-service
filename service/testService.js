@@ -2,6 +2,7 @@ const User = require('../model/userModel');
 const UserProfile = require('../model/userProfileModel');
 const { v4: uuidv4 } = require('uuid');
 
+//function qui gere les les requette de la bdd
 const getLastnameFromFirstname = async (data)=> {
     const {name} =data;
     const resultuser = []
@@ -14,12 +15,14 @@ const getLastnameFromFirstname = async (data)=> {
 };
 
 const postUserTest = async (data) => {
+    //recuperation de chaque donnée (traitement qi besoin)
     const {email} = data;
     const {password} = data;
     const {username} = data;
     const {firstname} = data;
     const {lastname} = data;
 
+    //creation d'un object d'instance model user avec les infos que l'on as besoin
     const user = new User({
         uuid : uuidv4(),
         email : email,
