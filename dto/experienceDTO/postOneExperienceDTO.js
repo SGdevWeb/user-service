@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const schemaValidator = require('../middleware/testMiddleware');
+const schemaValidator = require('../../middleware/testMiddleware');
 
 //shema de de verification des donner en entré de la route
 function postOneExperienceSchema(req, res, next){
@@ -9,7 +9,6 @@ function postOneExperienceSchema(req, res, next){
         date_end : Joi.date().iso(),
         description : Joi.string().required().min(3),
         place : Joi.string().required().min(3),
-        uuid : Joi.string().required()
     });
 
     const postOneExperienceSchema = Joi.object({

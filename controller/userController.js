@@ -38,8 +38,30 @@ const updateOneExperienceController = async (req, res) => {
     }
 };
 
+const postOneSoft_skillController = async (req, res) => {
+    try {
+        return res.status(200).json({ result: await userService.postOneExperience(req.body) });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+const updateOneSoft_skillController = async (req, res) => {
+    try {
+        return res.status(200).json({ result: await userService.updateOneExperience(req.body) });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     userProfileGetController,
     postOneExperienceController,
-    updateOneExperienceController
+    updateOneExperienceController,
+    postOneSoft_skillController,
+    updateOneSoft_skillController
 }

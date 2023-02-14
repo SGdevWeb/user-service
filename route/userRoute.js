@@ -10,4 +10,8 @@ router.post('/postoneexperience', DTO.postOneExperience, userController.postOneE
 
 router.post('/updateoneexperience', DTO.updateOneExperience, userController.updateOneExperienceController);
 
+router.post('/postonesoft_skill', DTO.postOneSoft_skill, userController.postOneSoft_skillController);
+
+router.post('/updateonesoft_skill', DTO.updateOneSoft_skill, userController.updateOneSoft_skillController);
+
 module.exports = router;
