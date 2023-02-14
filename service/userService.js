@@ -2,10 +2,10 @@ const User = require('../model/userModel');
 const UserProfile = require('../model/userProfileModel');
 const { v4: uuidv4 } = require('uuid');
 
-const getuserProfileById = async (id) => {
-    const result = await Test.findById(id);
+const getuserProfileById = async (uuid) => {
+    const result = await UserProfile.findOne({ uuid });
     if (!result) {
-        return { error: 'Test not found' };
+        return { error: 'user not found' };
     }
     return result;
 };
