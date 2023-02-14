@@ -7,6 +7,8 @@ const route = require('./route/testRoute');
 const mongoose = require("mongoose");
 require('dotenv').config();
 
+const userRoutes = require('./route/userRoutes')
+
 const port = process.env.SERVER_PORT;
 
 app.use(cors());
@@ -34,7 +36,8 @@ mongoose.connect(db_URL,{
     process.exit();
 });
 
-app.use("/", route);
+// app.use("/", route);
+app.use("/api/", userRoutes)
 
 app.listen(port, ()=>{
     console.log('serveur run on port '+ port);
