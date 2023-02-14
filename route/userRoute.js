@@ -4,7 +4,7 @@ require('dotenv').config();
 const userController = require('../controller/userController');
 const DTO = require('../dto/dtos');
 
-router.get('/testpostprofile/user',userController.userProfileGetController);
+router.get('/userprofile/:uuid',userController.userProfileGetController);
 
 router.post('/postoneexperience', DTO.postOneExperience, userController.postOneExperienceController);
 
