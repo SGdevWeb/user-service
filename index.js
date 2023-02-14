@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require("cors");
 const helmet = require("helmet");
 const route = require('./route/testRoute');
+const userRoute = require('./route/userRoute');
 const mongoose = require("mongoose");
 require('dotenv').config();
 
@@ -35,6 +36,7 @@ mongoose.connect(db_URL,{
 });
 
 app.use("/", route);
+app.use("/", userRoute);
 
 app.listen(port, ()=>{
     console.log('serveur run on port '+ port);

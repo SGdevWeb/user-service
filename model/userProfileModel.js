@@ -5,7 +5,9 @@ const experienceSchema = mongoose.Schema({
     date_start : { type : Date },
     date_end : { type : Date },
     description : String,
-    place : String
+    place : String,
+    uuid : String
+    
 });
 
 const soft_skillSchema = mongoose.Schema({
@@ -17,7 +19,7 @@ const soft_skillSchema = mongoose.Schema({
 const userProfileSchema = mongoose.Schema({
     id : Number,
     uuid: String,
-    descrption: String,
+    description: String,
     date_birth: { type: Date},
     city: String,
     work: String,

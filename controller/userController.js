@@ -18,6 +18,28 @@ const userProfileGetController = async (req, res) => {
     }
 };
 
+const postOneExperienceController = async (req, res) => {
+    try {
+        return res.status(200).json({ result: await userService.postOneExperience(req.body) });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+const updateOneExperienceController = async (req, res) => {
+    try {
+        return res.status(200).json({ result: await userService.updateOneExperience(req.body) });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     userProfileGetController,
+    postOneExperienceController,
+    updateOneExperienceController
 }
