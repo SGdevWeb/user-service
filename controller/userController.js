@@ -13,6 +13,17 @@ const userProfileGetController = async (req, res) => {
     }
 };
 
+const updateProfile = async (req, res) => {
+    try {
+        return res.status(200).json({ result: await service.user.updateProfile(req.body) });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     userProfileGetController,
+    updateProfile
 }

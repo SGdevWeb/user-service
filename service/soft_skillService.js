@@ -1,3 +1,4 @@
+const User = require('../model/userModel');
 const UserProfile = require('../model/userProfileModel');
 const { v4: uuidv4 } = require('uuid');
 
@@ -5,7 +6,8 @@ const postOneSoft_skill = async (data) => {
     const {soft_skill} = data;
     const {uuid_user} = data;
 
-    const userProfile = await UserProfile.findOne({uuid_user : uuid_user});
+    const userData = await User.findOne({uuid : uuid_user}).populate('profile');
+    const userProfile = userData.profile;
     if(userProfile){
         soft_skill[0].uuid = uuidv4();
         userProfile.soft_skill.push(soft_skill[0]);
@@ -24,7 +26,8 @@ const updateOneSoft_skill = async (data) => {
     const {soft_skill} = data;
     const {uuid_user} = data;
 
-    const userProfile = await UserProfile.findOne({uuid_user : uuid_user});
+    const userData = await User.findOne({uuid : uuid_user}).populate('profile');
+    const userProfile = userData.profile;
     if(userProfile){
         console.log(soft_skill)
         const found = userProfile.soft_skill.findIndex(e => e.uuid === soft_skill[0].uuid);

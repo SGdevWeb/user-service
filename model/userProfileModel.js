@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const user = require('./userModel');
 
 const experienceSchema = mongoose.Schema({
     name : String,
@@ -25,8 +26,7 @@ const userProfileSchema = mongoose.Schema({
     city: String,
     work: String,
     experience: [ { type : experienceSchema } ],
-    soft_skill: [ { type : soft_skillSchema } ],
-    uuid_user: String,
+    soft_skill: [ { type : soft_skillSchema } ]
 });
 
 module.exports = mongoose.model("user_profile",userProfileSchema);

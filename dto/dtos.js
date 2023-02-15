@@ -8,6 +8,8 @@ const updateOneExperience = require('./experienceDTO/updateOneExperienceDTO');
 const postOneSoft_skill = require('./soft_skillDTO/postOneSoft_skillDTO');
 const updateOneSoft_skill = require('./soft_skillDTO/updateOneSoft_skillDTO');
 
+const updateProfile = require('./userDTO/updateProfileDTO');
+
 module.exports = {
     test,
     testPost,
@@ -15,5 +17,6 @@ module.exports = {
     postOneExperience,
     updateOneExperience,
     postOneSoft_skill,
-    updateOneSoft_skill
+    updateOneSoft_skill,
+    updateProfile
 }

@@ -14,4 +14,6 @@ router.post('/postonesoft_skill', DTO.postOneSoft_skill, controller.soft_skill.p
 
 router.post('/updateonesoft_skill', DTO.updateOneSoft_skill, controller.soft_skill.updateOneSoft_skillController);
 
+router.post('/updateprofile', DTO.updateProfile, controller.user.updateProfile);
+
 module.exports = router;
