@@ -12,7 +12,8 @@ const experienceSchema = mongoose.Schema({
 
 const soft_skillSchema = mongoose.Schema({
     name : String,
-    description : String
+    description : String,
+    uuid : String
 });
 
 

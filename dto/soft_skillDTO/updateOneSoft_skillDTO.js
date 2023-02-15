@@ -6,6 +6,7 @@ function updateOneSoft_skillSchema(req, res, next){
     const soft_skillSchema = Joi.object({
         name : Joi.string().required(),
         description : Joi.string().required(),
+        uuid : Joi.string().required()
     });
 
     const updateOneSoft_skillSchema = Joi.object({
