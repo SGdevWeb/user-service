@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const user = require('./userModel');
 
 const experienceSchema = mongoose.Schema({
     name : String,
