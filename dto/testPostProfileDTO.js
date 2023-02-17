@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const schemaValidator = require('../middleware/testMiddleware');
+const schemaValidator = require('../middleware/schemaValidator');
 
 function testPostProfileSchema(req, res, next){
 //schema de l'objet experience

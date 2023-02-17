@@ -2,13 +2,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
 
-const User = require('../model/User')
+// const userServices = require('../service/userServices')
+const User = require('../model/userModel')
 
-exports.signin = (req, res, next) => {
-    // Lorsque le corps de la requête est un objet vide
-    if (Object.keys(req.body).length === 0) {
-        return res.status(400).json({ message: 'Saisie incorrecte' });
-    }
+const signin = async (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
@@ -26,7 +23,7 @@ exports.signin = (req, res, next) => {
         .catch(error => res.status(500).json({ error }))
 };
 
-exports.login = (req, res, next) => {
+const login = (req, res, next) => {
     if (Object.keys(req.body).length === 0) {
         return res.status(400).json({ message: 'Saisie incorrecte' });
     }
@@ -54,3 +51,8 @@ exports.login = (req, res, next) => {
         })
         .catch(error => res.status(500).json({ error }));
 };
+
+module.exports = {
+    signin,
+    login
+}
