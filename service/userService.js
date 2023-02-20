@@ -12,17 +12,10 @@ const getuserProfileById = async (uuid) => {
 };
 
 const updateProfile = async (data) => {
+    const {uuid,username,avatar} = data.user;
+    const {description,work} = data.profile;
 
-    const userData = data.user
-    const {uuid} = userData;
-    const {username} = userData;
-    const {avatar} = userData;
-
-    const profileData = data.profile
-    const {description} = profileData;
-    const {work} = profileData;
-
-    const res =''
+    const res = [];
     
     const userfullData = await User.findOne({uuid : uuid}).populate('profile');
     if(userfullData){
@@ -34,10 +27,10 @@ const updateProfile = async (data) => {
             if(err){
                 return err
             }
-            //res += 'user updated';
         });
+        res.push({"success":"specified user updated"});
     } else {
-        return {"error":"can't specified user"}
+        return {"error":"can't find specified user"}
     }
     const userProfileFullData = userfullData.profile;
     if(userProfileFullData){
@@ -47,8 +40,8 @@ const updateProfile = async (data) => {
             if(err){
                 return err
             }
-            //res += ' , profile updated'
         });
+        res.push({"success" : "profile of user updated"})
     } else {
         return {"error":"can't find profile of specified user"}
     }
