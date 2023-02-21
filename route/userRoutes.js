@@ -8,4 +8,6 @@ router.post('/signin', DTO.signinDTO, userController.signin);
 
 router.post('/login', DTO.loginDTO, userController.login);
 
+router.get('/users', userController.getAllUsers)
+
 module.exports = router;
