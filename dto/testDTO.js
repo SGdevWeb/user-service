@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const schemaValidator = require('../middleware/testMiddleware');
+const schemaValidator = require('../middleware/schemaValidator');
 
 function testSchema(req, res, next){
 //shema de de verification des donner en entré de la route
@@ -9,7 +9,5 @@ function testSchema(req, res, next){
     //appelle function de validation de du shema 
     schemaValidator(req, testSchema, next);
 }
-
-
 
 module.exports = testSchema

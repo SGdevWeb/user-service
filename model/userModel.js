@@ -12,10 +12,12 @@ const userSchema = mongoose.Schema({
     username: String,
     avatar: String,
     private: Boolean,
-    role: {
-        admin: Boolean,
-        user_role: Boolean
-    },
+    role: String,
+    // role: {
+    //     admin: Boolean,
+    //     user_role: Boolean
+    // },
+    profile : { type: mongoose.Schema.Types.ObjectId, ref: 'user_profile' }
 });
 //nom de la collection  = nom du model+s exepemple nom du model : user, nom de la collections : users
-module.exports = mongoose.model("user",userSchema)
+module.exports = mongoose.model("User", userSchema)
