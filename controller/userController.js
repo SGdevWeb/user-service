@@ -1,33 +1,49 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
-const jwtDecode = require('jwt-decode')
 
 // const userServices = require('../service/userServices')
 const User = require('../model/userModel')
+const User_profile = require('../model/userProfileModel')
 
 const signin = async (req, res, next) => {
     // console.log(req.body, 'test userControllersignin')
-    bcrypt.hash(req.body.password, 10)
-        .then(hash => {
-            const user = new User({
-                uuid : uuidv4(),
-                email: req.body.email,
-                lastname: req.body.lastname,
-                firstname: req.body.firstname,
-                username: req.body.username,
-                password: hash,
-                role: req.body.role
-            });
-            // console.log(user, 'test')
-            user.save()
-                .then(() => res.status(201).json({ message: 'Utilisateur crée !' }))
-                .catch(error => res.status(400).json({ error }));
-        })
-        .catch(error => {
-            console.log('error signin')
-            res.status(500).json({ error })
-        })
+    const userProfileUuid = uuidv4()
+    const userUuid = uuidv4()
+
+    const userProfile = new User_profile({
+        uuid : userProfileUuid,
+        description: '',
+        date_birth: '',
+        city: '',
+        work: '',
+        experience: [],
+        soft_skill: [],
+        uuid_user: userUuid
+    });
+    // console.log('userProfile', userProfile)
+    userProfile.save()
+        .then(() => {
+            bcrypt.hash(req.body.password, 10)
+                .then(hash => {
+                    const user = new User({
+                        uuid : userUuid,
+                        email: req.body.email,
+                        lastname: req.body.lastname,
+                        firstname: req.body.firstname,
+                        username: req.body.username,
+                        password: hash,
+                        role: "user",
+                        profile: userProfileUuid,
+                    });
+                    // console.log('user', user)
+                    user.save()
+                        .then(() => res.status(201).json({ message: 'Utilisateur crée !' }))
+                        .catch(error => res.status(400).json({ error }))
+                })
+                .catch(error => res.status(500).json({ error }))
+            })       
+        .catch(error => res.status(500).json({ error }))
 };
 
 const login = (req, res, next) => {
@@ -47,30 +63,17 @@ const login = (req, res, next) => {
                         sub: user.uuid,
                         role: user.role
                     }
-                    // const token = jwt.sign(
-                    //     { userId: user.uuid }, 
-                    //     process.env.JWT_KEY, 
-                    //     { 
-                    //         expiresIn: '24h',
-                    //         subject: user.uuid,
-                    //         role: user.role
-                    //     }
-                    // )
                     const token = jwt.sign(payload, process.env.JWT_KEY)
                     // console.log('token ', token)
-                    // const decodedToken = jwtDecode(token)
-                    // console.log('Token décodé',decodedToken)
                     res.status(200).json({
                         token: token
                     })
                 })
                 .catch(error => {
-                    console.log('error catch bcrypt')
                     res.status(500).json({ error })
                 });
         })
         .catch(error => {
-            console.log('erreur catch usercontrollerLogin')
             res.status(500).json({ error })
         });
 };
@@ -79,11 +82,9 @@ const getAllUsers =(req, res) => {
     console.log('req', req.auth)
     User.find()
         .then((response) => {
-            console.log('response', response)
             res.status(200).json({ users: response})
         })
         .catch(error => {
-            console.log(error)
             res.status(500).json({ error })
         })
 }

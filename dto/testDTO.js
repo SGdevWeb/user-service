@@ -2,11 +2,11 @@ const Joi = require('joi');
 const schemaValidator = require('../middleware/schemaValidator');
 
 function testSchema(req, res, next){
-//shema de de verification des donner en entré de la route
+// schema de vérification des données en entrée de la route
     const testSchema = Joi.object({
         name: Joi.string().required()
     });
-    //appelle function de validation de du shema 
+    //appel function de validation du schema 
     schemaValidator(req, testSchema, next);
 }
 

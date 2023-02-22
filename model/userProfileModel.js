@@ -17,7 +17,7 @@ const soft_skillSchema = mongoose.Schema({
 const userProfileSchema = mongoose.Schema({
     id : Number,
     uuid: String,
-    descrption: String,
+    description: String,
     date_birth: { type: Date},
     city: String,
     work: String,
@@ -26,4 +26,4 @@ const userProfileSchema = mongoose.Schema({
     uuid_user: String,
 });
 
-module.exports = mongoose.model("user_profile",userProfileSchema);
+module.exports = mongoose.model("user_profile", userProfileSchema);

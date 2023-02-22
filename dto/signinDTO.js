@@ -6,11 +6,10 @@ function signinDTO(req, res, next){
     console.log(req.body, 'test dtosignin')
     const signinDTO = Joi.object({
         email: Joi.string().email().lowercase().required(),
-        password: Joi.string().min(8).required(),
-        username: Joi.string().min(3).required(),
-        firstname: Joi.string().min(3).required(),
         lastname: Joi.string().min(3).required(),
-        role: Joi.string().required()
+        firstname: Joi.string().min(3).required(),
+        username: Joi.string().min(3).required(),
+        password: Joi.string().min(8).required()
     });
     schemaValidator(req, signinDTO, next);
 }
