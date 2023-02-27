@@ -16,4 +16,7 @@ router.post('/updateonesoft_skill', DTO.updateOneSoft_skill, controller.soft_ski
 
 router.post('/updateprofile', DTO.updateProfile, controller.user.updateProfile);
 
+router.get("/:id",controller.user.getUserById);
+
+
 module.exports = router;

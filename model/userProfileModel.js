@@ -18,7 +18,6 @@ const soft_skillSchema = mongoose.Schema({
 
 
 const userProfileSchema = mongoose.Schema({
-    id : Number,
     uuid: String,
     description: String,
     date_birth: { type: Date},

@@ -46,7 +46,8 @@ const updateProfile = async (data) => {
         return {"error":"can't find profile of specified user"}
     }
     return {"succes" : res};
-}
+};
+
 
 module.exports = {
     getuserProfileById,
