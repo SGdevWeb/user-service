@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
     //     admin: Boolean,
     //     user_role: Boolean
     // },
-    profile : { type: mongoose.Schema.Types.String, ref: 'user_profile' }
+    profile : { type: mongoose.Schema.Types.ObjectId, ref: 'user_profile' }
 }, {
     timestamps: true
 });

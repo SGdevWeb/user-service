@@ -4,10 +4,12 @@ const DTO = require('../dto/dtos')
 
 const userController = require('../controller/userController');
 
-router.post('/signin', DTO.signinDTO, userController.signin);
+router.post('/signin', DTO.signinDTO, userController.signinController);
 
-router.post('/login', DTO.loginDTO, userController.login);
+router.post('/login', DTO.loginDTO, userController.loginController);
 
-router.get('/users', userController.getAllUsers)
+router.get('/users', userController.getAllUsersController)
+
+router.get('/profiles', userController.getAllProfileUsersController)
 
 module.exports = router;
