@@ -28,4 +28,4 @@ const userProfileSchema = mongoose.Schema({
     soft_skill: [ { type : soft_skillSchema } ]
 });
 
-module.exports = mongoose.model("user_profile",userProfileSchema);
+module.exports = mongoose.model("user_profile", userProfileSchema);

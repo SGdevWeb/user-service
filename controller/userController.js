@@ -25,5 +25,5 @@ const updateProfile = async (req, res) => {
 
 module.exports = {
     userProfileGetController,
-    updateProfile
+    updateProfile,
 }

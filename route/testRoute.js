@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 const testController = require('../controller/testController');
-const validator = require('../middleware/testMiddleware');
+const validator = require('../middleware/schemaValidator');
 const DTO = require('../dto/dtos');
 
 
