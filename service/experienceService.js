@@ -3,8 +3,8 @@ const UserProfile = require('../model/userProfileModel');
 const { v4: uuidv4 } = require('uuid');
 
 const postOneExperience = async (data) => {
-    const { experience,uuid_user } = data;
-    const userData = await User.findOne({uuid : uuid_user}).populate('profile');
+    const { experience,user } = data;
+    const userData = await User.findOne({uuid : user.userId}).populate('profile');
     if(userData) {
         const userProfile = userData.profile;
         if(userProfile){

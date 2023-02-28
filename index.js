@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const helmet = require("helmet");
-const route = require('./route/testRoute');
+const testroute = require('./route/testRoute');
 const userRoute = require('./route/userRoute');
 const mongoose = require("mongoose");
 require('dotenv').config();
@@ -36,9 +36,10 @@ mongoose.connect(db_URL,{
     console.log('Could not connect to the database. Error...', err);
     process.exit();
 });
-
+app.use("/", testroute);
+app.use("/api/", userRoute);
 // app.use("/", route);
-app.use("/api/", userRoutes)
+//app.use("/api/", userRoutes);
 
 app.listen(port, ()=>{
     console.log('serveur run on port '+ port);

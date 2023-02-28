@@ -1,50 +1,27 @@
-const userServices = require('../service/userServices')
-
-const signinController = async (req, res, next) => {
+const userProfileGetController = async (req, res) => {
     try {
-        const result = await userServices.createUser(req.body);
-        if(result.success) {
-            res.status(201).json({ message: result.message });
-        } else {
-            res.status(400).json({ error: result.error });
+        const user = await service.user.getuserProfileById(req.params.uuid);
+        if (user.error) {
+            return res.status(404).json({ error: user.error });
         }
+        return res.status(200).json({ city: user.city});
     } catch (error) {
-        res.status(500).json({ error });
+        console.log(error);
+        return res.status(500).json({ message: error.message });
     }
 };
 
-const loginController = async (req, res, next) => {
+const updateProfile = async (req, res) => {
     try {
-      const { email, password } = req.body;
-      const response = await userServices.login(email, password);
-      res.status(200).json(response);
+        return res.status(200).json({ result: await service.user.updateProfile(req.body) });
+        
     } catch (error) {
-      res.status(401).json({ message: error.message });
-    }
-  };
-
-  const getAllUsersController = async (req, res) => {
-    try {
-        const users = await userServices.getAllUsers();
-        res.status(200).json({ users: users });
-    } catch (error) {
-        res.status(500).json({ error });
+        console.log(error);
+        return res.status(500).json({ message: error.message });
     }
 };
-
-
-const getAllProfileUsersController = async (req, res) => {
-    try {
-        const profile = await userServices.getAllProfileUsers();
-        res.status(200).json({ profiles: profile })
-    } catch (error) {
-        res.status(500).json({ error });
-    }
-}
 
 module.exports = {
-    signinController,
-    loginController,
-    getAllUsersController,
-    getAllProfileUsersController
+    userProfileGetController,
+    updateProfile
 }

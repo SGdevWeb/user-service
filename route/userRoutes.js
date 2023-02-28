@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const DTO = require('../dto/dtos')
 
-const userController = require('../controller/userController');
+const userController = require('../controller/authController');
 
 router.post('/signin', DTO.signinDTO, userController.signinController);
 

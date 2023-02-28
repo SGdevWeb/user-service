@@ -4,7 +4,7 @@ require('dotenv').config();
 const controller = require('../controller/controllers');
 const DTO = require('../dto/dtos');
 
-router.get('/userprofile/:uuid',controller.user.userProfileGetController);
+//router.get('/userprofile/:uuid',controller.user.userProfileGetController);
 
 router.post('/postoneexperience', DTO.postOneExperience, controller.experience.postOneExperienceController);
 
@@ -14,9 +14,17 @@ router.post('/postonesoft_skill', DTO.postOneSoft_skill, controller.soft_skill.p
 
 router.post('/updateonesoft_skill', DTO.updateOneSoft_skill, controller.soft_skill.updateOneSoft_skillController);
 
-router.post('/updateprofile', DTO.updateProfile, controller.user.updateProfile);
+//router.post('/updateprofile', DTO.updateProfile, controller.user.updateProfile);
 
-router.get("/:id",controller.user.getUserById);
+//router.get("/:id",controller.user.getUserById);
+
+router.post('/signin', DTO.signinDTO, controller.auth.signinController);
+
+router.post('/login', DTO.loginDTO, controller.auth.loginController);
+
+router.get('/users', controller.auth.getAllUsersController)
+
+router.get('/profiles', controller.auth.getAllProfileUsersController)
 
 
 module.exports = router;

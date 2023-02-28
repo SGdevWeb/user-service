@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const schemaValidator = require('../middleware/schemaValidator');
+const schemaValidator = require('../../middleware/schemaValidator');
 
 function testSchema(req, res, next){
 // schema de vérification des données en entrée de la route

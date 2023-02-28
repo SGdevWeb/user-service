@@ -1,9 +1,5 @@
 const Joi = require('joi');
-<<<<<<< HEAD:dto/testDTO/testPostProfileDTO.js
-const schemaValidator = require('../../middleware/testMiddleware');
-=======
-const schemaValidator = require('../middleware/schemaValidator');
->>>>>>> 6af23634e2c56612b31d6a4c7a457e01af4faadf:dto/testPostProfileDTO.js
+const schemaValidator = require('../../middleware/schemaValidator');
 
 function testPostProfileSchema(req, res, next){
 //schema de l'objet experience

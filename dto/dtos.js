@@ -9,11 +9,9 @@ const postOneSoft_skill = require('./soft_skillDTO/postOneSoft_skillDTO');
 const updateOneSoft_skill = require('./soft_skillDTO/updateOneSoft_skillDTO');
 
 const updateProfile = require('./userDTO/updateProfileDTO');
-const test = require('./testDTO');
-const testPost = require('./testPostDTO');
-const testProfile = require('./testPostProfileDTO');
-const loginDTO = require('./loginDTO');
-const signinDTO = require('./signinDTO')
+
+const loginDTO = require('./authDTO/loginDTO');
+const signinDTO = require('./authDTO/signinDTO')
 
 module.exports = {
     test,
