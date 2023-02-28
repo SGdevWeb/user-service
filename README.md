@@ -9,6 +9,7 @@ MEDIA_SERVICE_ADDRESS=""
 
 DB_URL=""
 
+JWT_KEY='BONJOUR'
 
 
 ## Getting started
