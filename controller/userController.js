@@ -1,10 +1,12 @@
+const service = require('../service/services');
+
 const userProfileGetController = async (req, res) => {
     try {
-        const user = await service.user.getuserProfileById(req.params.uuid);
+        const user = await service.user.getUserProfileById(req.params.uuid);
         if (user.error) {
             return res.status(404).json({ error: user.error });
         }
-        return res.status(200).json({ city: user.city});
+        return res.status(200).json(user);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: error.message });

@@ -3,8 +3,8 @@ const UserProfile = require('../model/userProfileModel');
 const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 
-const getuserProfileById = async (uuid) => {
-    const result = await UserProfile.findOne({ uuid });
+const getUserProfileById = async (uuid) => {
+    const result = await User.findOne({uuid : uuid }).populate('profile');
     if (!result) {
         return { error: 'user not found' };
     }
@@ -50,6 +50,6 @@ const updateProfile = async (data) => {
 
 
 module.exports = {
-    getuserProfileById,
+    getUserProfileById,
     updateProfile
 }

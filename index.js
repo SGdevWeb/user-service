@@ -37,7 +37,7 @@ mongoose.connect(db_URL,{
     process.exit();
 });
 app.use("/", testroute);
-app.use("/api/", userRoute);
+app.use("/api", userRoute);
 // app.use("/", route);
 //app.use("/api/", userRoutes);
 

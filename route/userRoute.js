@@ -16,7 +16,7 @@ router.post('/updateonesoft_skill', DTO.updateOneSoft_skill, controller.soft_ski
 
 //router.post('/updateprofile', DTO.updateProfile, controller.user.updateProfile);
 
-//router.get("/:id",controller.user.getUserById);
+router.get("/userprofile/:uuid",controller.user.userProfileGetController);
 
 router.post('/signin', DTO.signinDTO, controller.auth.signinController);
 
