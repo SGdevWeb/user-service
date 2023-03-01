@@ -3,12 +3,46 @@ const UserProfile = require('../model/userProfileModel');
 const { v4: uuidv4 } = require('uuid');
 const mongoose = require('mongoose');
 
+const filterProfile = (user) => {
+    const userfinal = {
+        email : user.email,
+        firstname : user.firstname,
+        lastname : user.lastname,
+        username : user.username,
+        description : user.profile.description,
+        date_birth : user.profile.date_birth,
+        work : user.profile.work,
+        experience : [],
+        soft_skill : [],
+    };
+    user.profile.experience.forEach((experience) => {
+        const exp = {
+            name : experience.name,
+            date_start : experience.date_start,
+            date_end : experience.date_end,
+            description : experience.description,
+            place : experience.place,
+            uuid : experience.uuid
+        };
+        userfinal.experience.push(exp);
+    });
+    user.profile.soft_skill.forEach((soft_skill) => {
+        const sftskl = {
+            name : soft_skill.name,
+            description : soft_skill.description,
+            uuid : soft_skill.uuid
+        };
+        userfinal.soft_skill.push(sftskl);
+    });
+    return userfinal;
+}
+
 const getUserProfileById = async (uuid) => {
     const result = await User.findOne({uuid : uuid }).populate('profile');
     if (!result) {
         return { error: 'user not found' };
     }
-    return result;
+    return filterProfile(result);
 };
 
 const updateProfile = async (data) => {
