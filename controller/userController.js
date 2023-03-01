@@ -42,9 +42,23 @@ const getAllProfileUsersController = async (req, res) => {
     }
 }
 
+const getUserController = async(req, res) => {
+    // console.log('entra la peticion :', req.params.userId)
+    try {
+        const  uuid  = req.params.userId;
+        // console.log(uuid);
+        const user = await userServices.getUser(uuid);
+    res.status(200).json({ users: user });
+} catch (error) {
+    res.status(500).json({ error });
+}
+}
+
 module.exports = {
     signinController,
     loginController,
     getAllUsersController,
-    getAllProfileUsersController
+    getAllProfileUsersController,
+    getUserController,
+    
 }

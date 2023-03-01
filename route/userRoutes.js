@@ -8,8 +8,10 @@ router.post('/signin', DTO.signinDTO, userController.signinController);
 
 router.post('/login', DTO.loginDTO, userController.loginController);
 
-router.get('/users', userController.getAllUsersController)
+router.get('/users', userController.getAllUsersController);
 
-router.get('/profiles', userController.getAllProfileUsersController)
+router.get('/profiles', userController.getAllProfileUsersController);
+
+router.get('/user/:userId', userController.getUserController);
 
 module.exports = router;
