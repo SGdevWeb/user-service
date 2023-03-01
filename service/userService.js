@@ -6,11 +6,12 @@ const mongoose = require('mongoose');
 const filterProfile = (user) => {
     const userfinal = {
         email : user.email,
+        //password : user.password,
         firstname : user.firstname,
         lastname : user.lastname,
         username : user.username,
         description : user.profile.description,
-        date_birth : user.profile.date_birth,
+        date_birth : user.profile.date_birth ? new Date(user.profile.date_birth).toLocaleDateString() : "",
         work : user.profile.work,
         experience : [],
         soft_skill : [],
@@ -18,8 +19,8 @@ const filterProfile = (user) => {
     user.profile.experience.forEach((experience) => {
         const exp = {
             name : experience.name,
-            date_start : experience.date_start,
-            date_end : experience.date_end,
+            date_start : new Date(experience.date_start).toLocaleDateString(),
+            date_end : experience.date_end ? new Date(experience.date_end).toLocaleDateString() : "",
             description : experience.description,
             place : experience.place,
             uuid : experience.uuid
