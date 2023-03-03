@@ -34,6 +34,7 @@ const createUser = async (reqBody) => {
             firstname: reqBody.firstname,
             username: reqBody.username,
             password: hash,
+            avatar: "https://img.freepik.com/vecteurs-libre/illustration-vectorielle-realiste-medias-sociaux-emoji-emoticon_587448-1120.jpg?w=1380&t=st=1677605349~exp=1677605949~hmac=22db999ce40cfd8a3ec5a4a643aead7ee5a62993d200badb3dcf6a718813fc2d",
             role: "user",
             profile: profile._id,
         });
@@ -58,7 +59,11 @@ const login = async (email, password) => {
         }
         const payload = {
             expiresIn: '1h',
-            sub: user.uuid,
+            sub: {
+                username: user.username,
+                avatar: user.avatar,
+                uuid: user.uuid
+            },
             role: user.role
         };
         const token = jwt.sign(payload, process.env.JWT_KEY);
@@ -86,9 +91,25 @@ const getAllProfileUsers = async () => {
     }
 }
 
+const getUser = async (uuid) => {
+    // console.log('entra a userService', uuid)
+    try {
+      const user = await User.findOne({ uuid: uuid }).populate('profile');
+    //   console.log("user:",user)
+      if (!user) {
+        throw new Error('Utilisateur introuvable');
+      }
+      return user;
+    } catch (error) {
+      throw error;
+    }
+}
+
+
 module.exports = { 
     createUser,
     login,
     getAllUsers,
-    getAllProfileUsers
+    getAllProfileUsers,
+    getUser,
 };
