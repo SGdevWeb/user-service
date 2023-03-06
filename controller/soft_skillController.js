@@ -20,7 +20,18 @@ const updateOneSoft_skillController = async (req, res) => {
     }
 };
 
+const deleteOneSoft_skillController = async (req, res) => {
+    try {
+        return res.status(200).json({ result: await service.soft_skill.deletteOneSoft_skill(req.body) });
+        
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+}
+
 module.exports = {
     postOneSoft_skillController,
-    updateOneSoft_skillController
+    updateOneSoft_skillController,
+    deleteOneSoft_skillController
 }

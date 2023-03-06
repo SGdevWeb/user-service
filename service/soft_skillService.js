@@ -16,7 +16,7 @@ const postOneSoft_skill = async (data) => {
                     return err
                 }
             });
-            return {"succes":'soft_skill added in user_profile of specified user '};
+            return soft_skill;
         } else {
             return {"error":"can't find profile of specified user"};
         }
@@ -44,7 +44,33 @@ const updateOneSoft_skill = async (data) => {
             } else {
                 return {"error":"can't find specified soft_skill in user_profil of specified user"};
             }
-            return {"succes":'specified soft_skill updated in user_profile of specified user '};
+            return soft_skill;
+        } else {
+            return {"error":"can't find profile of specified user"};
+        }
+    } else {
+        return {"error":"can't find specified user"};
+    }
+}
+
+const deletteOneSoft_skill = async (data) => {
+    const { user, uuid_soft_skill } = data;
+    const userData = await User.findOne({uuid : user.userId}).populate('profile');
+    if( userData) {
+        const userProfile = userData.profile;
+        if(userProfile){
+            const found = userProfile.soft_skill.findIndex(e => e.uuid === uuid_soft_skill);
+            if(found >=0){
+                userProfile.soft_skill.pull({uuid : uuid_soft_skill});
+                await userProfile.save(function (err,doc){
+                    if(err){
+                        return err
+                    }
+                });
+            } else {
+                return {"error":"can't find specified soft_skill in user_profil of specified user"};
+            }
+        return uuid_soft_skill;
         } else {
             return {"error":"can't find profile of specified user"};
         }
@@ -55,5 +81,6 @@ const updateOneSoft_skill = async (data) => {
 
 module.exports = {
     postOneSoft_skill,
-    updateOneSoft_skill
+    updateOneSoft_skill,
+    deletteOneSoft_skill
 }
