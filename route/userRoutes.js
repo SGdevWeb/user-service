@@ -12,6 +12,6 @@ router.get("/users", userController.getAllUsersController);
 
 router.get("/profiles", userController.getAllProfileUsersController);
 
-router.get("/users/:id", userController.getUserController);
+router.get("/users/:uuid", userController.getUserController);
 
 module.exports = router;

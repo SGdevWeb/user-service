@@ -93,10 +93,10 @@ const getAllProfileUsers = async () => {
 };
 
 const getUser = async (uuid) => {
-  // console.log('entra a userService', uuid)
+  console.log("entra a userService", uuid);
   try {
     const user = await User.findOne({ uuid: uuid }).populate("profile");
-    //   console.log("user:",user)
+    console.log("user:", user);
     if (!user) {
       throw new Error("Utilisateur introuvable");
     }
