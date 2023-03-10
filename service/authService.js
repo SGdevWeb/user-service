@@ -58,8 +58,11 @@ const login = async (email, password) => {
         }
         const payload = {
             expiresIn: '1h',
-            sub: user.uuid,
-            role: user.role
+            sub: {
+                uuid: user.uuid,
+                username: user.username,
+                avatar: user.avatar,
+            },
         };
         const token = jwt.sign(payload, process.env.JWT_KEY);
         return { token: token };
