@@ -51,18 +51,21 @@ const getUserProfileById = async (uuid) => {
     return filteredProfile;
 };
 
-const updateProfile = async (data,uuid) => {
-        const { username, avatar, firstname, lastname, email, oldPassword, newPassword, confirmPassword, description, work, city, date_birth  } = data.user;
-        const userfullData = await User.findOne( uuid ).populate('profile');
+const updateProfile = async (data) => {
+        const { user, user_profile  } = data;
+        const userfullData = await User.findOne( {uuid : user.user} ).populate('profile');
         if (!userfullData) {
           return { error: "utilisateur introuvable" };
         }
       
-        userfullData.username = username;
-        userfullData.avatar = avatar;
-        userfullData.firstname = firstname;
-        userfullData.lastname = lastname;
-        userfullData.email = email;
+        userfullData.username = user_profile.username;
+        userfullData.avatar = user_profile.avatar;
+        userfullData.firstname = user_profile.firstname;
+        userfullData.lastname = user_profile.lastname;
+        userfullData.email = user_profile.email;
+        userfullData.oldPassword = user_profile.password;
+        userfullData.newPassword = user_profile.newPassword;
+        userfullData.confirmPassword = user_profile.confirmPassword;
       
         // // Vérifier si l'email existe déjà
         // const emailExists = await userService.emailExists(email);
@@ -71,7 +74,7 @@ const updateProfile = async (data,uuid) => {
         // }
       
         // Vérifier que l'ancien mot de passe est correct avant de mettre à jour le nouveau mot de passe
-        if (oldPassword && newPassword && confirmPassword) {
+        if (user_profile.oldPassword && user_profile.newPassword && user_profile.confirmPassword) {
           const passwordMatch = await bcrypt.compare(oldPassword, userfullData.password);
           if (!passwordMatch) {
             return { error: "Ancien mot de passe incorrect" };
@@ -101,10 +104,10 @@ const updateProfile = async (data,uuid) => {
           return { error: "Impossible de trouver l'utilisateur spécifié" };
         }
       
-        userProfileFullData.description = description;
-        userProfileFullData.work = work;
-        userProfileFullData.date_birth = new Date(date_birth).toISOString().substring(0, 10);
-        userProfileFullData.city = city;
+        userProfileFullData.description = user_profile.description;
+        userProfileFullData.work = user_profile.work;
+        userProfileFullData.date_birth = new Date(user_profile.date_birth).toISOString().substring(0, 10);
+        userProfileFullData.city = user_profile.city;
         try {
           await userProfileFullData.save();
         } catch (error) {
