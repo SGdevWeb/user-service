@@ -6,7 +6,6 @@ const User = require("../model/userModel");
 const User_profile = require("../model/userProfileModel");
 
 const createUser = async (reqBody) => {
-  //   console.log("createUser");
   const userProfileUuid = uuidv4();
   const userUuid = uuidv4();
 
@@ -22,10 +21,8 @@ const createUser = async (reqBody) => {
   });
 
   try {
-    // console.log("userProfileSave");
     await userProfile.save();
     const profile = await User_profile.findOne({ uuid: userProfileUuid });
-    // console.log("profile", profile._id);
     const hash = await bcrypt.hash(reqBody.password, 10);
     const user = new User({
       uuid: userUuid,
@@ -39,12 +36,10 @@ const createUser = async (reqBody) => {
       role: "user",
       profile: profile._id,
     });
-    // console.log("userSave");
-    const response = await user.save();
-    // console.log("response", response);
-    return { success: true, message: "Utilisateur créé !" };
+    await user.save();
+    return { message: "Utilisateur créé !" };
   } catch (error) {
-    return { success: false, error };
+    return { error };
   }
 };
 
@@ -76,24 +71,23 @@ const login = async (email, password) => {
 
 const getAllUsers = async () => {
   try {
-    const response = await User.find();
-    return response;
+    const users = await User.find();
+    return users;
   } catch (error) {
-    throw error;
+    return { error };
   }
 };
 
 const getAllProfileUsers = async () => {
   try {
-    const response = await User.find().populate("profile");
-    return response;
+    const profileUsers = await User.find().populate("profile");
+    return profileUsers;
   } catch (error) {
-    throw error;
+    return { error };
   }
 };
 
 const getUser = async (uuid) => {
-  console.log("entra a userService", uuid);
   try {
     const user = await User.findOne({ uuid: uuid }).populate("profile");
     console.log("user:", user);
@@ -106,10 +100,16 @@ const getUser = async (uuid) => {
   }
 };
 
+const getUserByEmail = async (email) => {
+  const user = await User.findOne({ email: email });
+  return user;
+};
+
 module.exports = {
   createUser,
   login,
   getAllUsers,
   getAllProfileUsers,
   getUser,
+  getUserByEmail,
 };

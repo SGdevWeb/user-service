@@ -2,14 +2,18 @@ const userServices = require("../service/userServices");
 
 const signinController = async (req, res, next) => {
   try {
-    const result = await userServices.createUser(req.body);
-    if (result.success) {
-      res.status(201).json({ message: result.message });
-    } else {
-      res.status(400).json({ error: result.error });
+    // Vérification de l'unicité de l'email
+    const user = await userServices.getUserByEmail(req.body.email);
+    if (user) {
+      return res.status(400).json({
+        message:
+          "Cette adresse e-mail est déjà enregistrée, merci de modifier votre saisie",
+      });
     }
+    const result = await userServices.createUser(req.body);
+    res.status(201).json({ message: result.message });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -28,21 +32,20 @@ const getAllUsersController = async (req, res) => {
     const users = await userServices.getAllUsers();
     res.status(200).json({ users: users });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(400).json({ message: error.message });
   }
 };
 
 const getAllProfileUsersController = async (req, res) => {
   try {
-    const profile = await userServices.getAllProfileUsers();
-    res.status(200).json({ profiles: profile });
+    const profileUsers = await userServices.getAllProfileUsers();
+    res.status(200).json({ profileUsers });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(400).json({ message: error.message });
   }
 };
 
 const getUserController = async (req, res) => {
-  console.log("getUserController", req.params);
   // console.log('entra la peticion :', req.params.userId)
   try {
     const { uuid } = req.params;
@@ -50,7 +53,7 @@ const getUserController = async (req, res) => {
     const user = await userServices.getUser(uuid);
     res.status(200).json({ user: user });
   } catch (error) {
-    res.status(500).json({ error });
+    res.status(400).json({ message: error.message });
   }
 };
 
