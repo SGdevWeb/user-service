@@ -13,10 +13,16 @@ const userProfileGetController = async (req, res) => {
     }
 };
 
-const updateProfile = async (req, res) => {
+const updateUser = async (req, res) => {
     try {
-        return res.status(200).json({ result: await service.user.updateProfile(req.body) });
-        
+        const user = await service.user.updateProfile(req.body)
+        if (!user) {
+            throw new Error("Erreur impossible de mettre à jour le profile");
+        }
+        if (user.error) {
+            throw new Error(user.error);
+        }
+        return res.status(200).json(user);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: error.message });
@@ -25,5 +31,5 @@ const updateProfile = async (req, res) => {
 
 module.exports = {
     userProfileGetController,
-    updateProfile
+    updateUser
 }
