@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const postOneExperience = async (data) => {
     const { experience, user } = data;
 
-    const userData = await User.findOne({uuid : user.userId}).populate('profile');
+    const userData = await User.findOne({uuid : user.user}).populate('profile');
     if(userData) {
         const userProfile = userData.profile;
         if(userProfile){
@@ -30,7 +30,7 @@ const postOneExperience = async (data) => {
 
 const updateOneExperience = async (data) => {
     const { experience, user } = data;
-    const userData = await User.findOne({uuid : user.userId}).populate('profile');
+    const userData = await User.findOne({uuid : user.user}).populate('profile');
     if( userData) {
         const userProfile = userData.profile;
         if(userProfile){
@@ -60,7 +60,7 @@ const updateOneExperience = async (data) => {
 
 const deletteOneExperience = async (data) => {
     const { user, uuid_experience } = data;
-    const userData = await User.findOne({uuid : user.userId}).populate('profile');
+    const userData = await User.findOne({uuid : user.user}).populate('profile');
     if( userData) {
         const userProfile = userData.profile;
         if(userProfile){

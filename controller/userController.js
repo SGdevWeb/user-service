@@ -23,11 +23,6 @@ const updateProfile = async (req, res) => {
     }
 };
 
-module.exports = {
-    userProfileGetController,
-    updateProfile
-}
-
 const getAllProfileUsersController = async (req, res) => {
     try {
         const profile = await userServices.getAllProfileUsers();
@@ -50,10 +45,8 @@ const getUserController = async(req, res) => {
 }
 
 module.exports = {
-    signinController,
-    loginController,
-    getAllUsersController,
     getAllProfileUsersController,
     getUserController,
-    
+    userProfileGetController,
+    updateProfile
 }

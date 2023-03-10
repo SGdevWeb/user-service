@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const postOneSoft_skill = async (data) => {
     const {soft_skill, user} = data;
 
-    const userData = await User.findOne({uuid : user.userId}).populate('profile');
+    const userData = await User.findOne({uuid : user.user}).populate('profile');
     if(userData) {
         const userProfile = userData.profile;
         if(userProfile){
@@ -28,7 +28,7 @@ const postOneSoft_skill = async (data) => {
 
 const updateOneSoft_skill = async (data) => {
     const {soft_skill, user} = data;
-    const userData = await User.findOne({uuid : user.userId}).populate('profile');
+    const userData = await User.findOne({uuid : user.user}).populate('profile');
     if( userData){
         const userProfile = userData.profile;
         if(userProfile){
@@ -55,7 +55,7 @@ const updateOneSoft_skill = async (data) => {
 
 const deletteOneSoft_skill = async (data) => {
     const { user, uuid_soft_skill } = data;
-    const userData = await User.findOne({uuid : user.userId}).populate('profile');
+    const userData = await User.findOne({uuid : user.user}).populate('profile');
     if( userData) {
         const userProfile = userData.profile;
         if(userProfile){
