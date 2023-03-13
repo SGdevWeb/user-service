@@ -89,7 +89,7 @@ const getAllProfileUsers = async () => {
 const getUser = async (uuid) => {
   try {
     const user = await User.findOne({ uuid: uuid }).populate("profile");
-    console.log("user:", user);
+    // console.log("user:", user);
     if (!user) {
       throw new Error("Utilisateur introuvable");
     }
