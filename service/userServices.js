@@ -70,7 +70,7 @@ const login = async (email, password) => {
 
 const getAllUsers = async () => {
   try {
-    const users = await User.find();
+    const users = await User.find({}, "-password").populate("profile");
     return users;
   } catch (error) {
     return { error };
@@ -88,7 +88,9 @@ const getAllProfileUsers = async () => {
 
 const getUser = async (uuid) => {
   try {
-    const user = await User.findOne({ uuid: uuid }).populate("profile");
+    const user = await User.findOne({ uuid: uuid }, "-password").populate(
+      "profile"
+    );
     // console.log("user:", user);
     if (!user) {
       throw new Error("Utilisateur introuvable");
