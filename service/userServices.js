@@ -70,7 +70,12 @@ const login = async (email, password) => {
 
 const getAllUsers = async () => {
   try {
-    const users = await User.find({}, "-password").populate("profile");
+    const users = await User.find()
+      .select({ _id: 0, password: 0, __v: 0 })
+      .populate({
+        path: "profile",
+        select: "-_id -__v",
+      });
     return users;
   } catch (error) {
     return { error };
@@ -79,7 +84,12 @@ const getAllUsers = async () => {
 
 const getAllProfileUsers = async () => {
   try {
-    const profileUsers = await User.find().populate("profile");
+    const profileUsers = await User.find()
+      .select({ _id: 0, password: 0, __v: 0 })
+      .populate({
+        path: "profile",
+        select: "-_id -__v",
+      });
     return profileUsers;
   } catch (error) {
     return { error };
@@ -88,9 +98,12 @@ const getAllProfileUsers = async () => {
 
 const getUser = async (uuid) => {
   try {
-    const user = await User.findOne({ uuid: uuid }, "-password").populate(
-      "profile"
-    );
+    const user = await User.findOne({ uuid: uuid })
+      .select({ _id: 0, password: 0, __v: 0 })
+      .populate({
+        path: "profile",
+        select: "-_id -__v",
+      });
     // console.log("user:", user);
     if (!user) {
       throw new Error("Utilisateur introuvable");
