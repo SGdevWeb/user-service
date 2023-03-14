@@ -15,9 +15,9 @@ function updateProfileSchema(req, res, next) {
         oldPassword: Joi.string().min(8).allow(""),
         newPassword: Joi.string().min(8).allow(""),
         confirmPassword: Joi.string().min(8).allow(""),
-        description: Joi.string(),
+        description: Joi.string().allow(""),
         work: Joi.string().allow(''),
-        date_birth: Joi.date().iso(),
+        date_birth: Joi.date().iso().allow("").allow(null),
         city: Joi.string().min(8),
         user: Joi.string().required(),
     });

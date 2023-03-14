@@ -103,7 +103,7 @@ const getUserProfileById = async (uuid) => {
     }
     userProfileFullData.work = data.work;
     userProfileFullData.city = data.city;
-    if (data.date_birth) {
+    if (data.date_birth !== "") {
       const dateOfBirth = new Date(data.date_birth);
       console.log(dateOfBirth);
       if (!isNaN(dateOfBirth)) {
