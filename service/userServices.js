@@ -119,6 +119,11 @@ const getUserByEmail = async (email) => {
   return user;
 };
 
+const getUserByUsername = async (username) => {
+  const user = await User.findOne({ username });
+  return user;
+};
+
 module.exports = {
   createUser,
   login,
@@ -126,4 +131,5 @@ module.exports = {
   getAllProfileUsers,
   getUser,
   getUserByEmail,
+  getUserByUsername,
 };
