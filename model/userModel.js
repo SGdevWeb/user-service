@@ -1,14 +1,8 @@
 const mongoose = require("mongoose");
 
-<<<<<<< HEAD
 //schéma de la data des collections 
 const userSchema = mongoose.Schema({
-=======
-//schéma de la data des collections
-const userSchema = mongoose.Schema(
-  {
     id: Number,
->>>>>>> cbad71110fc8df62619cf4940b161c15444a2d90
     uuid: String,
     email: { type: String, unique: true },
     password: String,

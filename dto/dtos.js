@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const test = require('./testDTO/testDTO');
 const testPost = require('./testDTO/testPostDTO');
 const testProfile = require('./testDTO/testPostProfileDTO');
@@ -30,16 +29,3 @@ module.exports = {
     loginDTO,
     signinDTO
 }
-=======
-const test = require("./testDTO");
-const testPost = require("./testPostDTO");
-const testProfile = require("./testPostProfileDTO");
-const user = require("./userDto");
-
-module.exports = {
-  test,
-  testPost,
-  testProfile,
-  user,
-};
->>>>>>> cbad71110fc8df62619cf4940b161c15444a2d90
