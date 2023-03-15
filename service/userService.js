@@ -40,9 +40,9 @@ const filterProfile = (user) => {
   }
 
 const getUserProfileById = async (uuid) => {
-    const result = await User.findOne({ uuid: uuid }).populate('profile');
+    const result = await User.findOne({ uuid: uuid}).populate('profile');
     if (!result) {
-      return { error: 'user not found' };
+      return { error: 'utilisateur introuvable' };
     }
     const filteredProfile = filterProfile(result);
     if (filteredProfile.date_birth) {
@@ -58,21 +58,22 @@ const getUserProfileById = async (uuid) => {
       return { error: "utilisateur introuvable" };
     }
 
-    console.log(userfullData, "hello");
     userfullData.username = data.username;
     userfullData.avatar = data.avatar;
     userfullData.firstname = data.firstname;
     userfullData.lastname = data.lastname;
     userfullData.email = data.email;
-
-    userfullData.oldPassword = await bcrypt.hash(data.oldPassword, 10);
+    userfullData.oldPassword=data.oldPassword
     userfullData.newPassword = data.newPassword;
     userfullData.confirmPassword = data.confirmPassword;
 
-    console.log(data.date_birth);
-    console.log(userfullData.oldPassword !== userfullData.password);
+    // const existingUser = await User.findOne({ email: data.email });
+    // if (existingUser && existingUser.uuid !== userfullData.uuid) {
+    //   return { error: "cet email est déjà utilisé" };
+    // }
     // Vérifier que l'ancien mot de passe est correct avant de mettre à jour le nouveau mot de passe
-    if (userfullData.oldPassword === "") {
+    if (userfullData.oldPassword !== "") {
+      userfullData.oldPassword = await bcrypt.hash(data.oldPassword, 10);
       if (userfullData.oldPassword !== userfullData.password) {
         return { error: "Ancien mot de passe incorrect" };
       }
@@ -105,7 +106,6 @@ const getUserProfileById = async (uuid) => {
     userProfileFullData.city = data.city;
     if (data.date_birth !== "") {
       const dateOfBirth = new Date(data.date_birth);
-      console.log(dateOfBirth);
       if (!isNaN(dateOfBirth)) {
         userProfileFullData.date_birth = dateOfBirth.toISOString("fr");
       }
