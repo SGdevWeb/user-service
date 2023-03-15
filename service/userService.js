@@ -17,106 +17,114 @@ const filterProfile = (user) => {
     experience: [],
     soft_skill: [],
   };
-    user.profile.experience.forEach((experience) => {
-      const exp = {
-        name: experience.name,
-        date_start: new Date(experience.date_start).toLocaleDateString(),
-        date_end: experience.date_end ? new Date(experience.date_end).toLocaleDateString() : "",
-        description: experience.description,
-        place: experience.place,
-        uuid: experience.uuid
-      };
-      userfinal.experience.push(exp);
-    });
-    user.profile.soft_skill.forEach((soft_skill) => {
-      const sftskl = {
-        name: soft_skill.name,
-        description: soft_skill.description,
-        uuid: soft_skill.uuid
-      };
-      userfinal.soft_skill.push(sftskl);
-    });
-    return userfinal;
-  }
+  user.profile.experience.forEach((experience) => {
+    const exp = {
+      name: experience.name,
+      date_start: new Date(experience.date_start).toLocaleDateString(),
+      date_end: experience.date_end ? new Date(experience.date_end).toLocaleDateString() : "",
+      description: experience.description,
+      place: experience.place,
+      uuid: experience.uuid
+    };
+    userfinal.experience.push(exp);
+  });
+  user.profile.soft_skill.forEach((soft_skill) => {
+    const sftskl = {
+      name: soft_skill.name,
+      description: soft_skill.description,
+      uuid: soft_skill.uuid
+    };
+    userfinal.soft_skill.push(sftskl);
+  });
+  return userfinal;
+}
 
 const getUserProfileById = async (uuid) => {
-    const result = await User.findOne({ uuid: uuid}).populate('profile');
-    if (!result) {
-      return { error: 'utilisateur introuvable' };
+  const result = await User.findOne({ uuid: uuid }).populate('profile');
+  if (!result) {
+    return { error: 'utilisateur introuvable' };
+  }
+  const filteredProfile = filterProfile(result);
+  if (filteredProfile.date_birth) {
+    filteredProfile.date_birth = filteredProfile.date_birth.toISOString().slice(0, 10); // format : "yyyy-mm-dd"
+  }
+  return filteredProfile;
+};
+
+const updateProfile = async (data) => {
+
+ 
+  const userfullData = await User.findOne({ uuid: data.user }).populate('profile');
+  if (!userfullData) {
+    return { error: "utilisateur introuvable" };
+  }
+
+  userfullData.username = data.username;
+  userfullData.avatar = data.avatar;
+  userfullData.firstname = data.firstname;
+  userfullData.lastname = data.lastname;
+  userfullData.email = data.email;
+  userfullData.oldPassword = data.oldPassword
+  userfullData.newPassword = data.newPassword;
+  userfullData.confirmPassword = data.confirmPassword;
+
+  const existingUser = await User.findOne({ email: data.email });
+  if (existingUser && existingUser.uuid !== userfullData.uuid) {
+    return { error: "cet email est déjà utilisé" };
+  }
+  // Vérifier que l'ancien mot de passe est correct avant de mettre à jour le nouveau mot de passe 
+  if (userfullData.oldPassword !== "") {
+    const isPasswordValid = await bcrypt.compare(userfullData.oldPassword, userfullData.password)
+    console.log(isPasswordValid)
+    if (!isPasswordValid) {
+      return { error: "Ancien mot de passe incorrect" };
     }
-    const filteredProfile = filterProfile(result);
-    if (filteredProfile.date_birth) {
-      filteredProfile.date_birth = filteredProfile.date_birth.toISOString().slice(0, 10); // format : "yyyy-mm-dd"
+
+    // Vérifier que les champs de mot de passe sont remplis
+    if (!userfullData.newPassword || !userfullData.confirmPassword) {
+      return { error: "Veuillez remplir tous les champs de mot de passe" };
     }
-    return filteredProfile;
+
+    // Vérifier que le nouveau mot de passe et la confirmation correspondent
+    if (userfullData.newPassword !== userfullData.confirmPassword) {
+      return { error: "La confirmation du mot de passe ne correspond pas" };
+    }
+
+    // Hacher le nouveau mot de passe avant de le stocker dans la base de données
+    const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+    userfullData.password = hashedPassword;
+  }
+
+try {
+  await userfullData.save();
+} catch (error) {
+  return { error: error.messages };
+}
+
+const userProfileFullData = userfullData.profile;
+if (!userProfileFullData) {
+  return { error: "Impossible de trouver l'utilisateur spécifié" };
+}
+
+if (data.description) {
+  userProfileFullData.description = data.description;
+}
+userProfileFullData.work = data.work;
+userProfileFullData.city = data.city;
+if (data.date_birth !== "") {
+  const dateOfBirth = new Date(data.date_birth);
+  if (!isNaN(dateOfBirth)) {
+    userProfileFullData.date_birth = dateOfBirth.toISOString("fr");
+  }
+}
+try {
+  await userProfileFullData.save();
+} catch (error) {
+  return { error: error.message };
+}
+return { success: "Utilisateur et profil mis à jour" };
   };
 
-  const updateProfile = async (data) => {
-
-    const userfullData = await User.findOne({ uuid: data.user }).populate('profile');
-    if (!userfullData) {
-      return { error: "utilisateur introuvable" };
-    }
-
-    userfullData.username = data.username;
-    userfullData.avatar = data.avatar;
-    userfullData.firstname = data.firstname;
-    userfullData.lastname = data.lastname;
-    userfullData.email = data.email;
-    userfullData.oldPassword=data.oldPassword
-    userfullData.newPassword = data.newPassword;
-    userfullData.confirmPassword = data.confirmPassword;
-
-    // const existingUser = await User.findOne({ email: data.email });
-    // if (existingUser && existingUser.uuid !== userfullData.uuid) {
-    //   return { error: "cet email est déjà utilisé" };
-    // }
-    // Vérifier que l'ancien mot de passe est correct avant de mettre à jour le nouveau mot de passe
-    if (userfullData.oldPassword !== "") {
-      userfullData.oldPassword = await bcrypt.hash(data.oldPassword, 10);
-      if (userfullData.oldPassword !== userfullData.password) {
-        return { error: "Ancien mot de passe incorrect" };
-      }
-
-      // Vérifier que le nouveau mot de passe et la confirmation correspondent
-      if (userfullData.newPassword !== userfullData.confirmPassword) {
-        return { error: "La confirmation du mot de passe ne correspond pas" };
-      }
-
-      // Hacher le nouveau mot de passe avant de le stocker dans la base de données
-      const hashedPassword = await bcrypt.hash(data.newPassword, 10);
-      userfullData.password = hashedPassword;
-    }
-
-    try {
-      await userfullData.save();
-    } catch (error) {
-      return { error: error.messages };
-    }
-
-    const userProfileFullData = userfullData.profile;
-    if (!userProfileFullData) {
-      return { error: "Impossible de trouver l'utilisateur spécifié" };
-    }
-
-    if (data.description) {
-      userProfileFullData.description = data.description;
-    }
-    userProfileFullData.work = data.work;
-    userProfileFullData.city = data.city;
-    if (data.date_birth !== "") {
-      const dateOfBirth = new Date(data.date_birth);
-      if (!isNaN(dateOfBirth)) {
-        userProfileFullData.date_birth = dateOfBirth.toISOString("fr");
-      }
-    }
-    try {
-      await userProfileFullData.save();
-    } catch (error) {
-      return { error: error.message };
-    }
-    return { success: "Utilisateur et profil mis à jour" };
-  };
 
 module.exports = {
   getUserProfileById,
