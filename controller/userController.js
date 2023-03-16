@@ -23,15 +23,6 @@ const signinController = async (req, res, next) => {
           "Cette adresse e-mail est déjà enregistrée, merci de modifier votre saisie",
       });
     }
-    const userByUsername = await userServices.getUserByUsername(
-      req.body.username
-    );
-    if (userByUsername) {
-      return res.status(400).json({
-        message:
-          "Ce nom d'utilisateur existe déjà, merci de modifier votre saisie",
-      });
-    }
     const result = await userServices.createUser(req.body);
     res.status(201).json({ message: result.message });
   } catch (error) {
