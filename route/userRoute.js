@@ -16,18 +16,21 @@ router.post('/updateonesoft_skill', DTO.updateOneSoft_skill, controller.soft_ski
 
 router.post('/deleteonesoft_skill', DTO.deletteOneSoft_skill, controller.soft_skill.deleteOneSoft_skillController);
 
+router.get("/userprofile/:uuid", controller.profile.userProfileGetController);
 
-router.get("/userprofile/:uuid",controller.user.userProfileGetController);
+router.put('/updateuser/:uuid', DTO.updateProfile, controller.profile.updateUser);
 
-router.post('/signin', DTO.signinDTO, controller.auth.signinController);
+router.post("/signin", DTO.signinDTO, controller.user.signinController);
 
-router.post('/login', DTO.loginDTO, controller.auth.loginController);
+router.post("/login", DTO.loginDTO, controller.user.loginController);
 
-router.get('/users', controller.auth.getAllUsersController);
+router.get("/users", controller.user.getAllUsersController);
 
-router.get('/profiles', controller.auth.getAllProfileUsersController);
+router.get("/profiles", controller.user.getAllProfileUsersController);
 
-router.put('/updateuser/:uuid', DTO.updateProfile, controller.user.updateUser);
+router.get("/users/:uuid", controller.user.getUserController);
+
+
 
 
 module.exports = router;

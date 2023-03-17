@@ -1,132 +1,135 @@
-const User = require('../model/userModel');
-const bcrypt = require('bcrypt');
-const UserProfile = require('../model/userProfileModel');
-const { v4: uuidv4 } = require('uuid');
-const mongoose = require('mongoose');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 
-const filterProfile = (user) => {
-  const userfinal = {
-    email: user.email,
-    firstname: user.firstname,
-    lastname: user.lastname,
-    username: user.username,
-    description: user.profile.description,
-    date_birth: user.profile.date_birth,
-    work: user.profile.work,
-    city: user.profile.city,
+const User = require("../model/userModel");
+const User_profile = require("../model/userProfileModel");
+
+const createUser = async (reqBody) => {
+  const userProfileUuid = uuidv4();
+  const userUuid = uuidv4();
+
+  const userProfile = new User_profile({
+    uuid: userProfileUuid,
+    description: "",
+    date_birth: "",
+    city: "",
+    work: "",
     experience: [],
     soft_skill: [],
-  };
-  user.profile.experience.forEach((experience) => {
-    const exp = {
-      name: experience.name,
-      date_start: new Date(experience.date_start).toLocaleDateString(),
-      date_end: experience.date_end ? new Date(experience.date_end).toLocaleDateString() : "",
-      description: experience.description,
-      place: experience.place,
-      uuid: experience.uuid
-    };
-    userfinal.experience.push(exp);
+    uuid_user: userUuid,
   });
-  user.profile.soft_skill.forEach((soft_skill) => {
-    const sftskl = {
-      name: soft_skill.name,
-      description: soft_skill.description,
-      uuid: soft_skill.uuid
-    };
-    userfinal.soft_skill.push(sftskl);
-  });
-  return userfinal;
-}
 
-const getUserProfileById = async (uuid) => {
-  const result = await User.findOne({ uuid: uuid }).populate('profile');
-  if (!result) {
-    return { error: 'utilisateur introuvable' };
+  try {
+    await userProfile.save();
+    const profile = await User_profile.findOne({ uuid: userProfileUuid });
+    const hash = await bcrypt.hash(reqBody.password, 10);
+    const user = new User({
+      uuid: userUuid,
+      email: reqBody.email,
+      lastname: reqBody.lastname,
+      firstname: reqBody.firstname,
+      username: reqBody.username,
+      password: hash,
+      avatar:
+        "https://img.freepik.com/vecteurs-libre/illustration-vectorielle-realiste-medias-sociaux-emoji-emoticon_587448-1120.jpg?w=1380&t=st=1677605349~exp=1677605949~hmac=22db999ce40cfd8a3ec5a4a643aead7ee5a62993d200badb3dcf6a718813fc2d",
+      role: "user",
+      profile: profile._id,
+    });
+    await user.save();
+    return { message: "Utilisateur créé !" };
+  } catch (error) {
+    return { error };
   }
-  const filteredProfile = filterProfile(result);
-  if (filteredProfile.date_birth) {
-    filteredProfile.date_birth = filteredProfile.date_birth.toISOString().slice(0, 10); // format : "yyyy-mm-dd"
-  }
-  return filteredProfile;
 };
 
-const updateProfile = async (data) => {
-
- 
-  const userfullData = await User.findOne({ uuid: data.user }).populate('profile');
-  if (!userfullData) {
-    return { error: "utilisateur introuvable" };
-  }
-
-  userfullData.username = data.username;
-  userfullData.avatar = data.avatar;
-  userfullData.firstname = data.firstname;
-  userfullData.lastname = data.lastname;
-  userfullData.email = data.email;
-  userfullData.oldPassword = data.oldPassword
-  userfullData.newPassword = data.newPassword;
-  userfullData.confirmPassword = data.confirmPassword;
-
-  const existingUser = await User.findOne({ email: data.email });
-  if (existingUser && existingUser.uuid !== userfullData.uuid) {
-    return { error: "cet email est déjà utilisé" };
-  }
-  // Vérifier que l'ancien mot de passe est correct avant de mettre à jour le nouveau mot de passe 
-  if (userfullData.oldPassword !== "") {
-    const isPasswordValid = await bcrypt.compare(userfullData.oldPassword, userfullData.password)
-    console.log(isPasswordValid)
+const login = async (email, password) => {
+  try {
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      throw new Error("Paire login/mot de passe incorrecte");
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return { error: "Ancien mot de passe incorrect" };
+      throw new Error("Paire login/mot de passe incorrecte");
     }
-
-    // Vérifier que les champs de mot de passe sont remplis
-    if (!userfullData.newPassword || !userfullData.confirmPassword) {
-      return { error: "Veuillez remplir tous les champs de mot de passe" };
-    }
-
-    // Vérifier que le nouveau mot de passe et la confirmation correspondent
-    if (userfullData.newPassword !== userfullData.confirmPassword) {
-      return { error: "La confirmation du mot de passe ne correspond pas" };
-    }
-
-    // Hacher le nouveau mot de passe avant de le stocker dans la base de données
-    const hashedPassword = await bcrypt.hash(data.newPassword, 10);
-    userfullData.password = hashedPassword;
+    const payload = {
+      expiresIn: "1h",
+      sub: {
+        uuid: user.uuid,
+        username: user.username,
+        avatar: user.avatar,
+      },
+    };
+    const token = jwt.sign(payload, process.env.JWT_KEY);
+    return { token: token };
+  } catch (error) {
+    throw new Error(error.message);
   }
+};
 
-try {
-  await userfullData.save();
-} catch (error) {
-  return { error: error.messages };
-}
-
-const userProfileFullData = userfullData.profile;
-if (!userProfileFullData) {
-  return { error: "Impossible de trouver l'utilisateur spécifié" };
-}
-
-if (data.description) {
-  userProfileFullData.description = data.description;
-}
-userProfileFullData.work = data.work;
-userProfileFullData.city = data.city;
-if (data.date_birth !== "") {
-  const dateOfBirth = new Date(data.date_birth);
-  if (!isNaN(dateOfBirth)) {
-    userProfileFullData.date_birth = dateOfBirth.toISOString("fr");
+const getAllUsers = async () => {
+  try {
+    const users = await User.find()
+      .select({ _id: 0, password: 0, __v: 0 })
+      .populate({
+        path: "profile",
+        select: "-_id -__v",
+      });
+    return users;
+  } catch (error) {
+    return { error };
   }
-}
-try {
-  await userProfileFullData.save();
-} catch (error) {
-  return { error: error.message };
-}
-return { success: "Utilisateur et profil mis à jour" };
-  };
+};
 
+const getAllProfileUsers = async () => {
+  try {
+    const profileUsers = await User.find()
+      .select({ _id: 0, password: 0, __v: 0 })
+      .populate({
+        path: "profile",
+        select: "-_id -__v",
+      });
+    return profileUsers;
+  } catch (error) {
+    return { error };
+  }
+};
+
+const getUser = async (uuid) => {
+  try {
+    const user = await User.findOne({ uuid: uuid })
+      .select({ _id: 0, password: 0, __v: 0 })
+      .populate({
+        path: "profile",
+        select: "-_id -__v",
+      });
+    // console.log("user:", user);
+    if (!user) {
+      throw new Error("Utilisateur introuvable");
+    }
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUserByEmail = async (email) => {
+  const user = await User.findOne({ email: email });
+  return user;
+};
+
+const getUserByUsername = async (username) => {
+  const user = await User.findOne({ username });
+  return user;
+};
 
 module.exports = {
-  getUserProfileById,
-  updateProfile
-}
+  createUser,
+  login,
+  getAllUsers,
+  getAllProfileUsers,
+  getUser,
+  getUserByEmail,
+  getUserByUsername,
+};

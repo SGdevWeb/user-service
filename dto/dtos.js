@@ -10,10 +10,10 @@ const postOneSoft_skill = require('./soft_skillDTO/postOneSoft_skillDTO');
 const updateOneSoft_skill = require('./soft_skillDTO/updateOneSoft_skillDTO');
 const deletteOneSoft_skill = require('./soft_skillDTO/deleteOneSoft_skillDTO')
 
-const updateProfile = require('./userDTO/updateProfileDTO');
+const updateProfile = require('./profileDTO/updateProfileDTO');
 
-const loginDTO = require('./authDTO/loginDTO');
-const signinDTO = require('./authDTO/signinDTO')
+const loginDTO = require('./userDTO/loginDTO');
+const signinDTO = require('./userDTO/signinDTO')
 
 module.exports = {
     test,
