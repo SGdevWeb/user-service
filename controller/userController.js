@@ -10,7 +10,7 @@ const signinController = async (req, res, next) => {
           "Cette adresse e-mail est déjà enregistrée, merci de modifier votre saisie",
       });
     }
-    const userByUsername = await userServices.getUserByUsername(
+    const userByUsername = await service.user.getUserByUsername(
       req.body.username
     );
     if (userByUsername) {
@@ -19,7 +19,7 @@ const signinController = async (req, res, next) => {
           "Ce nom d'utilisateur existe déjà, merci de modifier votre saisie",
       });
     }
-    const result = await userServices.createUser(req.body);
+    const result = await service.user.createUser(req.body);
     res.status(201).json({ message: result.message });
   } catch (error) {
     res.status(400).json({ message: error.message });
