@@ -1,8 +1,6 @@
 const User = require('../model/userModel');
 const bcrypt = require('bcrypt');
 const UserProfile = require('../model/userProfileModel');
-const { v4: uuidv4 } = require('uuid');
-const mongoose = require('mongoose');
 
 const filterProfile = (user) => {
   const userfinal = {
