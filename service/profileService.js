@@ -61,15 +61,10 @@ const updateProfile = async (data) => {
   userfullData.avatar = data.avatar;
   userfullData.firstname = data.firstname;
   userfullData.lastname = data.lastname;
-  userfullData.email = data.email;
   userfullData.oldPassword = data.oldPassword
   userfullData.newPassword = data.newPassword;
   userfullData.confirmPassword = data.confirmPassword;
-
-  const existingUser = await User.findOne({ email: data.email });
-  if (existingUser && existingUser.uuid !== userfullData.uuid) {
-    return { error: "cet email est déjà utilisé" };
-  }
+  
   // Vérifier que l'ancien mot de passe est correct avant de mettre à jour le nouveau mot de passe 
   if (userfullData.oldPassword !== "") {
     const isPasswordValid = await bcrypt.compare(userfullData.oldPassword, userfullData.password)

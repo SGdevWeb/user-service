@@ -6,8 +6,6 @@ const schemaValidator = require('../../middleware/schemaValidator');
 function updateProfileSchema(req, res, next) {
 
     const updateProfileSchema = Joi.object({
-
-        email: Joi.string().email().lowercase().required(),
         lastname: Joi.string().min(3).required(),
         firstname: Joi.string().min(3).required(),
         username: Joi.string().min(3).required(),
