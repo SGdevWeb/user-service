@@ -42,6 +42,14 @@ const getUserProfileById = async (uuid) => {
   if (!result) {
     return { error: 'utilisateur introuvable' };
   }
+  result.profile.experience.sort((a,b) => {
+    if(a.date_end === null && b.date_end === null){
+      return a.date_start > b.date_start ? -1 : 1;
+    }
+    if(a.date_end === null) {return -1;}
+    if(b.date_end === null) {return 1;}
+    return a.date_end > b.date_end ? -1 : 1;
+  })
   const filteredProfile = filterProfile(result);
   if (filteredProfile.date_birth) {
     filteredProfile.date_birth = filteredProfile.date_birth.toISOString().slice(0, 10); // format : "yyyy-mm-dd"
