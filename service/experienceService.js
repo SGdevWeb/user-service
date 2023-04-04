@@ -16,8 +16,7 @@ const postOneExperience = async (data) => {
                     return err
                 }
             });
-            experience.date_start = new Date(experience.date_start).toLocaleDateString();
-            experience.date_end = experience.date_end ? new Date(experience.date_end).toLocaleDateString() : "";
+            experience.date_end = experience.date_end ? experience.date_end : "";
             return experience;
         } else {
             return {"error":"can't find profile of specified user"};

@@ -18,8 +18,8 @@ const filterProfile = (user) => {
   user.profile.experience.forEach((experience) => {
     const exp = {
       name: experience.name,
-      date_start: new Date(experience.date_start).toLocaleDateString(),
-      date_end: experience.date_end ? new Date(experience.date_end).toLocaleDateString() : "",
+      date_start: experience.date_start,
+      date_end: experience.date_end ? experience.date_end : "",
       description: experience.description,
       place: experience.place,
       uuid: experience.uuid
