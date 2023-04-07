@@ -46,7 +46,7 @@ const updateOneExperience = async (data) => {
             } else {
                 return {"error":"can't find specified experience in user_profil of specified user"};
             }
-            experience.date_end = experience.date_end ? experience.date_end : "";
+            experience.date_end = experience.date_end ? experience.date_end : null;
             return experience;
         } else {
             return {"error":"can't find profile of specified user"};
