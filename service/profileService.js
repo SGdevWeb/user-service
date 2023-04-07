@@ -44,11 +44,17 @@ const getUserProfileById = async (uuid) => {
   }
   result.profile.experience.sort((a,b) => {
     if(a.date_end === null && b.date_end === null){
-      return a.date_start > b.date_start ? -1 : 1;
+      return new Date(a.date_start).valueOf() > new Date(b.date_start).valueOf() ? -1 : 1;
     }
-    if(a.date_end === null) {return -1;}
-    if(b.date_end === null) {return 1;}
-    return a.date_end > b.date_end ? -1 : 1;
+    if(a.date_end === null) {
+      if( new Date(a.date_start).valueOf() === new Date(b.date_end).valueOf() ){return -1}
+      return new Date(a.date_start).valueOf() > new Date(b.date_end).valueOf() ? -1 : 1
+    }
+    if(b.date_end === null) {
+      if(new Date(a.date_end).valueOf() === new Date(b.date_start).valueOf() ){return 1}
+      return new Date(a.date_end).valueOf() > new Date(b.date_start).valueOf() ? -1 : 1
+    }
+    return new Date(a.date_end).valueOf() > new Date(b.date_end).valueOf() ? -1 : 1;
   })
   const filteredProfile = filterProfile(result);
   if (filteredProfile.date_birth) {
