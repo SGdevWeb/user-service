@@ -62,7 +62,7 @@ const login = async (email, password) => {
       },
     };
     const token = jwt.sign(payload, process.env.JWT_KEY);
-    return { token: token };
+    return { token: token , uuid: user.uuid};
   } catch (error) {
     throw new Error(error.message);
   }

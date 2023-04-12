@@ -4,13 +4,15 @@
 SERVER_PORT= 8010
 
 API_ADDRESS="/tree-up-api"
-PROJECT_SERVICE_ADDRESS=""
-MEDIA_SERVICE_ADDRESS=""
+PROJECT_SERVICE_ADDRESS="http://localhost:8020"
+MEDIA_SERVICE_ADDRESS="http://localhost:8040"
 
 DB_URL=""
 
 JWT_KEY='BONJOUR'
 
+-----------------------------------------------------------
+npm i pour mettre à jour les dépendences du projet
 
 ## Getting started
 

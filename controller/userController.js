@@ -1,4 +1,5 @@
 const service = require('../service/services');
+const axios = require('axios')
 
 const signinController = async (req, res, next) => {
   try {
@@ -30,7 +31,22 @@ const loginController = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const response = await service.user.login(email, password);
-    res.status(200).json(response);
+    try {
+      const avatar = await axios.get(
+          `${process.env.MEDIA_SERVICE_ADDRESS}/api/getavatar/${response.uuid}/`,
+          {
+              responseType: 'arraybuffer'
+          }
+      );
+      const avatarOBJ = {
+          data: Buffer.from(avatar.data, 'binary').toString('base64'),
+          contentType: avatar.headers['content-type']
+      }
+      return res.send({ token: response.token, avatar: avatarOBJ });
+  } catch (error) {
+      console.log(error)
+  }
+    res.status(200).json(response.token);
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
