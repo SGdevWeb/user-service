@@ -38,11 +38,16 @@ const loginController = async (req, res, next) => {
               responseType: 'arraybuffer'
           }
       );
-      const avatarOBJ = {
+      if(Buffer.from(avatar.data).byteLength !== 0 ) {
+        const avatarOBJ = {
           data: Buffer.from(avatar.data, 'binary').toString('base64'),
           contentType: avatar.headers['content-type']
       }
       return res.send({ token: response.token, avatar: avatarOBJ });
+      } else {
+        return res.send({ token: response.token, avatar: null });
+      }
+      
   } catch (error) {
       console.log(error)
   }
