@@ -51,7 +51,7 @@ const loginController = async (req, res, next) => {
   } catch (error) {
       console.log(error)
   }
-    res.status(200).json(response.token);
+  return res.send({ token: response.token, avatar: null });
   } catch (error) {
     res.status(401).json({ message: error.message });
   }
